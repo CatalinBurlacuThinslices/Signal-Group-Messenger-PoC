@@ -46,6 +46,9 @@ signal-api/qr*.png
 qr*.png
 qr-*.png
 
+# PDF files (generated documentation)
+*.pdf
+
 # Temporary files
 *.tmp
 .cache/
