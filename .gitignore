@@ -1,0 +1,74 @@
+# Dependencies
+node_modules/
+
+# Environment files (CRITICAL - Contains sensitive configuration!)
+.env
+.env.local
+.env.production
+.env.development
+*.env
+backend/.env
+signal-poc/backend/.env
+
+# Logs
+*.log
+logs/
+backend.log
+frontend.log
+
+# OS files
+.DS_Store
+Thumbs.db
+.DS_Store?
+._*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-*
+
+# Build output
+dist/
+build/
+*/dist/
+*/build/
+
+# Signal data (CRITICAL - Contains private keys, registration data, and messages!)
+signal-api/signal-cli-config/
+signal-cli-config/
+**/signal-cli-config/
+
+# QR codes (may contain linking tokens)
+signal-api/*.png
+signal-api/qr*.png
+qr*.png
+qr-*.png
+
+# Temporary files
+*.tmp
+.cache/
+tmp/
+
+# Docker
+docker-compose.override.yml
+
+# Python (if any)
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+*.egg-info/
+
+# Backup files
+*.backup
+*.bak
+*~
+.backup/
+backup/
+
+# Test data that might contain sensitive info
+test-data/
+*.test.json
+

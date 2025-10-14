@@ -1,0 +1,6 @@
+# Signal data - contains keys and sensitive information
+signal-cli-config/
+
+# Logs
+*.log
+
