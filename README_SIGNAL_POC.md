@@ -3,7 +3,7 @@
 ## 🚀 **Start the Project**
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc
+cd <project-root>
 ./START_PROJECT.sh
 ```
 
@@ -32,7 +32,7 @@ Opens automatically at: **http://localhost:3000**
 ## 📁 **Project Structure**
 
 ```
-safe-poc/
+Signal_PoC/
 ├── START_PROJECT.sh       ← Run this to start
 ├── STOP_PROJECT.sh        ← Run this to stop
 ├── COMMANDS.md            ← All commands reference

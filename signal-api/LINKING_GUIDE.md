@@ -7,7 +7,7 @@ Instead of registering a new number, you can link your existing Signal account (
 ### Step 1: Generate QR Code
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-api
+cd <project-root>/signal-api
 
 # Make sure Signal API is running
 docker-compose up -d
@@ -63,7 +63,7 @@ Your Signal phone number is shown in:
 Update this in:
 ```bash
 # Edit backend/.env
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-poc/backend
+cd <project-root>/signal-poc/backend
 nano .env
 
 # Set:

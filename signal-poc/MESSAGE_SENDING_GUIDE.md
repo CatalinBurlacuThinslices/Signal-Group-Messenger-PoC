@@ -57,7 +57,7 @@ Phone (Primary Device)
 
 **Run this script:**
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-api
+cd <project-root>/signal-api
 ./sync-groups.sh
 ```
 

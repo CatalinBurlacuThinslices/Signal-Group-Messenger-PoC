@@ -31,7 +31,7 @@ You'll see:
 
 **Step 1: Switch to Real Mode**
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-poc
+cd <project-root>/signal-poc
 ./switch-mode.sh real
 ```
 
@@ -60,7 +60,7 @@ cd ../signal-api
 ## 📂 **Project Folders:**
 
 ```
-safe-poc/
+Signal_PoC/
 ├── signal-api/           ← Signal API (Docker + linking scripts)
 ├── signal-poc/           ← Web App (React + Node.js)
 └── output/signal_documentation/  ← Complete Signal guides
@@ -92,7 +92,7 @@ safe-poc/
 ## 🔄 **Switch Between Modes:**
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-poc
+cd <project-root>/signal-poc
 
 # Demo mode (mock data)
 ./switch-mode.sh demo
@@ -119,7 +119,7 @@ cd /Users/thinslicesacademy8/projects/safe-poc/signal-poc
 
 **How to use:**
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-api
+cd <project-root>/signal-api
 ./link-and-verify.sh
 # Follow prompts
 # KEEP SIGNAL APP OPEN until script says "✅ SUCCESS!"

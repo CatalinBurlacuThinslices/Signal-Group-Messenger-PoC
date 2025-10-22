@@ -9,7 +9,7 @@ Since your number (+40751770274) is registered in the project (not on your phone
 ## 🔍 **Check for Pending Invitations**
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-api
+cd <project-root>/signal-api
 ./accept-group-invite.sh
 ```
 

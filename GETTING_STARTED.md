@@ -20,7 +20,7 @@ Before starting, make sure you have:
 ### Step 1: Clone/Download This Project
 
 ```bash
-cd /Users/thinslicesacademy8/projects/Signal_PoC
+cd <project-root>
 ```
 
 ### Step 2: Install Dependencies

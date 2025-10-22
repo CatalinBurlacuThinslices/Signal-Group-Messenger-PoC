@@ -7,7 +7,7 @@ When someone invites your number (+40751770274) to a group:
 ### **Just Sync and Refresh!**
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-api
+cd <project-root>/signal-api
 ./sync-groups.sh
 ```
 

@@ -104,7 +104,7 @@ signal-poc/
 
 2. **Start PoC:**
    ```bash
-   cd ~/projects/safe-poc/signal-poc
+   cd <project-root>/signal-poc
    ./start.sh
    ```
 

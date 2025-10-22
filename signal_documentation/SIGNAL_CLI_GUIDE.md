@@ -494,8 +494,8 @@ After=network.target
 [Service]
 Type=simple
 User=youruser
-WorkingDirectory=/home/youruser/safe-poc
-ExecStart=/home/youruser/safe-poc/monitor_safe_transactions.sh
+WorkingDirectory=/home/youruser/<project-folder>
+ExecStart=/home/youruser/<project-folder>/monitor_safe_transactions.sh
 Restart=always
 RestartSec=10
 
@@ -525,7 +525,7 @@ crontab -e
 Add:
 ```cron
 # Check for pending Safe transactions every 15 minutes
-*/15 * * * * /home/youruser/safe-poc/check_and_alert.sh >> /var/log/signal-alerts.log 2>&1
+*/15 * * * * /home/youruser/<project-folder>/check_and_alert.sh >> /var/log/signal-alerts.log 2>&1
 ```
 
 ### Check Script Example
@@ -539,7 +539,7 @@ SIGNAL_NUMBER="+12345678900"
 RECIPIENT="+19876543210"
 
 # Your check logic here
-NEEDS_ALERT=$(python3 /home/youruser/safe-poc/get_pending_transactions.py --count-only)
+NEEDS_ALERT=$(python3 /home/youruser/<project-folder>/get_pending_transactions.py --count-only)
 
 if [ "${NEEDS_ALERT}" -gt 0 ]; then
     signal-cli -a "${SIGNAL_NUMBER}" send \

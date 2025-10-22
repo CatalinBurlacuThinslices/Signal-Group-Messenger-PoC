@@ -165,7 +165,7 @@ curl -X POST http://localhost:8080/v2/send \
 ### 🚀 Fastest Way (30 seconds)
 
 ```bash
-cd /Users/thinslicesacademy8/projects/Signal_PoC
+cd <project-root>
 ./START_PROJECT.sh
 ```
 
@@ -227,7 +227,7 @@ Before you begin, ensure you have installed:
 ### Step 1: Install Dependencies
 
 ```bash
-cd /Users/thinslicesacademy8/projects/Signal_PoC
+cd <project-root>
 
 # Install root dependencies
 npm install
@@ -244,7 +244,7 @@ npm install
 ### Step 2: Start Docker
 
 ```bash
-cd /Users/thinslicesacademy8/projects/Signal_PoC/signal-api
+cd <project-root>/signal-api
 docker-compose up -d
 ```
 
@@ -262,7 +262,7 @@ curl http://localhost:8080/v1/health
 **Important:** Use a **dedicated phone number**, NOT your personal Signal number!
 
 ```bash
-cd /Users/thinslicesacademy8/projects/Signal_PoC/signal-api
+cd <project-root>/signal-api
 ./register.sh
 ```
 
@@ -322,7 +322,7 @@ Found 3 groups:
 ### Step 6: Configure Backend
 
 ```bash
-cd /Users/thinslicesacademy8/projects/Signal_PoC/signal-poc/backend
+cd <project-root>/signal-poc/backend
 
 # Create .env file (if not exists)
 cp env.example .env
@@ -348,7 +348,6 @@ SIGNAL_NUMBER=+[YOUR_NUMBER]
 - Use primary registration, NOT device linking for full functionality
 
 ---
-
 ## Architecture Overview
 
 ### System Architecture
@@ -559,7 +558,7 @@ Documentation Files:
 
 **Start Everything:**
 ```bash
-cd /Users/thinslicesacademy8/projects/Signal_PoC
+cd <project-root>
 ./START_PROJECT.sh
 ```
 
@@ -579,7 +578,7 @@ cd /Users/thinslicesacademy8/projects/Signal_PoC
 
 **Terminal 1 - Signal API:**
 ```bash
-cd /Users/thinslicesacademy8/projects/Signal_PoC/signal-api
+cd <project-root>/signal-api
 docker-compose up -d
 
 # Verify
@@ -588,7 +587,7 @@ curl http://localhost:8080/v1/health
 
 **Terminal 2 - Backend:**
 ```bash
-cd /Users/thinslicesacademy8/projects/Signal_PoC/signal-poc/backend
+cd <project-root>/signal-poc/backend
 npm start
 
 # Expected output:
@@ -598,7 +597,7 @@ npm start
 
 **Terminal 3 - Frontend:**
 ```bash
-cd /Users/thinslicesacademy8/projects/Signal_PoC/signal-poc/frontend
+cd <project-root>/signal-poc/frontend
 npm run dev
 
 # Expected output:
@@ -614,7 +613,7 @@ Open: http://localhost:3000
 
 **Start Web App Only (assumes Signal API is running):**
 ```bash
-cd /Users/thinslicesacademy8/projects/Signal_PoC/signal-poc
+cd <project-root>/signal-poc
 ./start-all.sh
 ```
 
@@ -622,13 +621,13 @@ cd /Users/thinslicesacademy8/projects/Signal_PoC/signal-poc
 
 **Switch to demo mode:**
 ```bash
-cd /Users/thinslicesacademy8/projects/Signal_PoC/signal-poc
+cd <project-root>/signal-poc
 ./switch-mode.sh demo
 ```
 
 **Start:**
 ```bash
-cd /Users/thinslicesacademy8/projects/Signal_PoC
+cd <project-root>
 ./START_PROJECT.sh
 ```
 
@@ -642,7 +641,7 @@ cd /Users/thinslicesacademy8/projects/Signal_PoC
 
 **Morning - Start Work:**
 ```bash
-cd /Users/thinslicesacademy8/projects/Signal_PoC
+cd <project-root>
 ./START_PROJECT.sh
 ```
 
@@ -685,7 +684,7 @@ lsof -i :3000  # Frontend
 
 #### Start Everything
 ```bash
-cd /Users/thinslicesacademy8/projects/Signal_PoC
+cd <project-root>
 ./START_PROJECT.sh
 ```
 

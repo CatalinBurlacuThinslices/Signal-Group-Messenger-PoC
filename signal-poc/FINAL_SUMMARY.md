@@ -53,7 +53,7 @@
 **To use:**
 ```bash
 # Switch to real mode
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-poc
+cd <project-root>/signal-poc
 ./switch-mode.sh real
 
 # Link your device (improved process)
@@ -68,7 +68,7 @@ cd ../signal-api
 ## 📁 **Project Structure:**
 
 ```
-safe-poc/
+Signal_PoC/
 ├── signal-api/                    ← Signal API (Docker)
 │   ├── docker-compose.yml         ← Docker config
 │   ├── link-and-verify.sh         ← Improved linking (waits for completion)
@@ -153,7 +153,7 @@ safe-poc/
 2. **Connect Mac to phone's hotspot**
 3. **Run:**
    ```bash
-   cd /Users/thinslicesacademy8/projects/safe-poc/signal-api
+   cd <project-root>/signal-api
    ./link-and-verify.sh
    ```
 4. **Scan QR code**
@@ -203,7 +203,7 @@ http://localhost:3000
 
 ```bash
 # 1. Switch mode
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-poc
+cd <project-root>/signal-poc
 ./switch-mode.sh real
 
 # 2. Link device (improved process)
@@ -220,7 +220,7 @@ cd ../signal-api
 
 ```bash
 # Start everything
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-poc
+cd <project-root>/signal-poc
 ./start-all.sh
 
 # Switch to demo mode

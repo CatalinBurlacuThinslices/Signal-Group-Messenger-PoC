@@ -15,7 +15,7 @@ Visit: https://signalcaptchas.org/registration/generate.html
 ### 2. Register
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-api
+cd <project-root>/signal-api
 
 # Run the register script with your captcha token
 ./register.sh 'YOUR_CAPTCHA_TOKEN_HERE'

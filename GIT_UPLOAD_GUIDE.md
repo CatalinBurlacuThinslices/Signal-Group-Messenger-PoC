@@ -5,7 +5,7 @@
 ### Step 1: Initialize Git Repository
 
 ```bash
-cd /Users/thinslicesacademy8/projects/Signal_PoC
+cd <project-root>
 git init
 ```
 
@@ -63,7 +63,7 @@ git push -u origin main
 ### Verify Gitignore Works:
 
 ```bash
-cd /Users/thinslicesacademy8/projects/Signal_PoC
+cd <project-root>
 
 # Check what will be committed
 git status
@@ -214,7 +214,7 @@ cd ..
 
 ```bash
 # Initialize
-cd /Users/thinslicesacademy8/projects/Signal_PoC
+cd <project-root>
 git init
 
 # Add files

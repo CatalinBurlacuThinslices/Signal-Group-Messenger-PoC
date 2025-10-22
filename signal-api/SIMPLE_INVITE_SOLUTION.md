@@ -14,7 +14,7 @@ You registered your number **+40751770274** in the project, so:
 ### **Step 1: See Your Groups**
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-api
+cd <project-root>/signal-api
 
 # List groups
 curl -s http://localhost:8080/v1/groups/+40751770274 | python3 -m json.tool
@@ -79,7 +79,7 @@ From the data I see:
 **To invite +40757239300 to "Web App Test Group":**
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-api
+cd <project-root>/signal-api
 
 ./add-member-to-group.sh \
   'group.UkhXTjVrZG1HTk13RDRGamszM3FJeVVEdFBlR00zTXBIY3haV2tmUndBbz0=' \
@@ -135,7 +135,7 @@ curl -X POST http://localhost:8080/v1/groups/+40751770274 \
 **Add someone to "Web App Test Group":**
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-api
+cd <project-root>/signal-api
 
 # Replace with actual phone number to invite
 ./add-member-to-group.sh \

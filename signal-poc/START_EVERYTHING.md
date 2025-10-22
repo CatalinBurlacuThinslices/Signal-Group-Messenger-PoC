@@ -8,7 +8,7 @@ This guide shows how to start **all components** of the Signal PoC from the proj
 
 ```bash
 # Navigate to project root
-cd /Users/thinslicesacademy8/projects/safe-poc
+cd <project-root>
 
 # 1. Start Signal API (Docker)
 cd signal-api
@@ -23,7 +23,7 @@ cd signal-poc
 ### Option 2: One Command (from project root)
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc
+cd <project-root>
 cd signal-api && docker-compose up -d && cd ../signal-poc && ./start-all.sh
 ```
 
@@ -32,7 +32,7 @@ cd signal-api && docker-compose up -d && cd ../signal-poc && ./start-all.sh
 ## 📁 Project Structure
 
 ```
-safe-poc/
+Signal_PoC/
 ├── signal-api/              ← Signal API (Docker)
 │   ├── docker-compose.yml
 │   ├── signal-cli-config/   ← Data (gitignored)
@@ -54,7 +54,7 @@ safe-poc/
 ### Step 1: Start Signal API
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-api
+cd <project-root>/signal-api
 docker-compose up -d
 
 # Verify it's running
@@ -85,7 +85,7 @@ curl -X POST http://localhost:8080/v1/register/+40751770274/verify/123456
 ### Step 4: Start Web App
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-poc
+cd <project-root>/signal-poc
 ./start-all.sh
 ```
 
@@ -124,7 +124,7 @@ pkill -f "node server.js"
 pkill -f "vite"
 
 # Stop Signal API
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-api
+cd <project-root>/signal-api
 docker-compose down
 ```
 
@@ -133,7 +133,7 @@ docker-compose down
 ## 🔄 Restart Everything
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc
+cd <project-root>
 
 # Restart Signal API
 cd signal-api
@@ -164,7 +164,7 @@ pkill -f "vite"
 ### Signal API not starting
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-api
+cd <project-root>/signal-api
 docker-compose down
 docker-compose up -d
 docker logs signal-api
@@ -173,7 +173,7 @@ docker logs signal-api
 ### Web app not starting
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-poc
+cd <project-root>/signal-poc
 pkill -f "node server.js"
 pkill -f "vite"
 ./start-all.sh
@@ -194,12 +194,12 @@ lsof -i :3000  # Frontend
 
 ```bash
 # Start everything
-cd /Users/thinslicesacademy8/projects/safe-poc
+cd <project-root>
 cd signal-api && docker-compose up -d && cd ../signal-poc && ./start-all.sh
 
 # Stop everything
 pkill -f "node server.js" && pkill -f "vite" && \
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-api && docker-compose down
+cd <project-root>/signal-api && docker-compose down
 
 # Check status
 docker ps | grep signal && ps aux | grep -E "node server|vite" | grep -v grep

@@ -15,7 +15,7 @@ https://signal.group/#CjQKIDVGVwQ9ZAcV-mAfwoXoS7ez...
 
 ### Quick Command:
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-api
+cd <project-root>/signal-api
 ./get-invite-links.sh
 ```
 
@@ -114,7 +114,7 @@ curl -X POST http://localhost:8080/v1/groups/+40751770274/GROUP_ID \
 
 Run this to see your groups:
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-api
+cd <project-root>/signal-api
 ./get-invite-links.sh
 ```
 

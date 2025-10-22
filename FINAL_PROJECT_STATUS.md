@@ -76,7 +76,7 @@ When registering as primary:
 
 **Use Demo Mode:**
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-poc
+cd <project-root>/signal-poc
 ./switch-mode.sh demo
 ```
 
@@ -201,7 +201,7 @@ If you know someone's number, add them directly:
 
 ```bash
 # Start everything
-cd /Users/thinslicesacademy8/projects/safe-poc
+cd <project-root>
 ./START_PROJECT.sh
 
 # Open web app

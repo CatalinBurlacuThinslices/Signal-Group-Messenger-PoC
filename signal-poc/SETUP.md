@@ -115,7 +115,7 @@ curl -X POST http://localhost:8080/v1/register/${SIGNAL_NUMBER}/verify/123456
 ### Step 1: Navigate to PoC Directory
 
 ```bash
-cd ~/projects/safe-poc/signal-poc
+cd <project-root>/signal-poc
 ```
 
 ### Step 2: Backend Setup
@@ -166,13 +166,13 @@ npm install
 
 **macOS/Linux:**
 ```bash
-cd ~/projects/safe-poc/signal-poc
+cd <project-root>/signal-poc
 ./start.sh
 ```
 
 **Windows:**
 ```batch
-cd C:\projects\safe-poc\signal-poc
+cd <project-root>/signal-poc
 start.bat
 ```
 
@@ -187,7 +187,7 @@ The script will:
 
 **Terminal 1 - Backend:**
 ```bash
-cd ~/projects/safe-poc/signal-poc/backend
+cd <project-root>/signal-poc/backend
 npm start
 
 # Should see:
@@ -197,7 +197,7 @@ npm start
 
 **Terminal 2 - Frontend:**
 ```bash
-cd ~/projects/safe-poc/signal-poc/frontend
+cd <project-root>/signal-poc/frontend
 npm run dev
 
 # Should see:
@@ -265,7 +265,7 @@ In the web UI:
 cd ~/signal-api && docker-compose up -d
 
 # Start PoC
-cd ~/projects/safe-poc/signal-poc && ./start.sh
+cd <project-root>/signal-poc && ./start.sh
 ```
 
 ### Stop Everything
@@ -283,7 +283,7 @@ cd ~/signal-api && docker-compose down
 
 ```bash
 pkill -f "node server.js"
-cd ~/projects/safe-poc/signal-poc/backend
+cd <project-root>/signal-poc/backend
 npm start
 ```
 
@@ -329,7 +329,7 @@ docker-compose up -d
 **Solution:**
 ```bash
 # Edit backend .env
-cd ~/projects/safe-poc/signal-poc/backend
+cd <project-root>/signal-poc/backend
 nano .env
 
 # Add your number:

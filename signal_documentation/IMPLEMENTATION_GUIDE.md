@@ -46,7 +46,7 @@ Download from https://www.docker.com/products/docker-desktop
 ### Step 2: Create Project Structure
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc
+cd <project-root>
 mkdir signal-integration
 cd signal-integration
 mkdir -p signal-cli-config

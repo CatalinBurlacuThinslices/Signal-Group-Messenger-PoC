@@ -15,14 +15,14 @@
 ### Step 1: Switch to Real Mode
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-poc
+cd <project-root>/signal-poc
 ./switch-mode.sh real
 ```
 
 ### Step 2: Run the Improved Linking Script
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-api
+cd <project-root>/signal-api
 ./link-and-verify.sh
 ```
 
@@ -109,14 +109,14 @@ ps aux | grep "demo-mode\|node server" | grep -v grep
 ### Switch to Real Mode:
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-poc
+cd <project-root>/signal-poc
 ./switch-mode.sh real
 ```
 
 ### Switch to Demo Mode:
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-poc
+cd <project-root>/signal-poc
 ./switch-mode.sh demo
 ```
 
@@ -146,7 +146,7 @@ cd /Users/thinslicesacademy8/projects/safe-poc/signal-poc
 ### Want Real Signal Integration?
 ```bash
 # 1. Switch to real mode
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-poc
+cd <project-root>/signal-poc
 ./switch-mode.sh real
 
 # 2. Link device properly

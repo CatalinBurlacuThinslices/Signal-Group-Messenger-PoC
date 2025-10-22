@@ -3,7 +3,7 @@
 ## 🚀 **Quick Start (One Command)**
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc
+cd <project-root>
 ./START_PROJECT.sh
 ```
 
@@ -27,19 +27,19 @@ This starts everything:
 
 ### Start Signal API
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-api
+cd <project-root>/signal-api
 docker-compose up -d
 ```
 
 ### Start Backend
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-poc/backend
+cd <project-root>/signal-poc/backend
 PORT=5001 SIGNAL_NUMBER="+40751770274" SIGNAL_API_URL="http://localhost:8080" node server.js &
 ```
 
 ### Start Frontend
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-poc/frontend
+cd <project-root>/signal-poc/frontend
 npm run dev &
 ```
 
@@ -220,7 +220,7 @@ docker-compose up -d
 
 ### Morning - Start Work
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc
+cd <project-root>
 ./START_PROJECT.sh
 ```
 
@@ -241,7 +241,7 @@ http://localhost:3000
 
 ```bash
 # START
-cd /Users/thinslicesacademy8/projects/safe-poc
+cd <project-root>
 ./START_PROJECT.sh
 
 # STOP

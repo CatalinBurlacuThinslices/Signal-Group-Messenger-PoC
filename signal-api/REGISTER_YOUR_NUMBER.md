@@ -24,7 +24,7 @@ Example: `signalcaptcha://signal-recaptcha-v2.03AGdBq26Abcd...`
 ### Step 2: Register with Captcha
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-api
+cd <project-root>/signal-api
 
 # Use the FULL link you copied
 ./register.sh 'signalcaptcha://signal-recaptcha-v2.YOUR_TOKEN_HERE'
@@ -62,7 +62,7 @@ curl http://localhost:8080/v1/groups/+40751770274
 ### Step 5: Restart Web App
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc
+cd <project-root>
 ./STOP_PROJECT.sh
 ./START_PROJECT.sh
 ```

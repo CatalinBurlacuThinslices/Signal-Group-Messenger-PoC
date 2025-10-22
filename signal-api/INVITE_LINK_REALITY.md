@@ -23,7 +23,7 @@ After extensive testing, here's what works and what doesn't:
 Instead of invite links, just **add people directly**:
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-api
+cd <project-root>/signal-api
 
 # Add member to group
 ./add-member-to-group.sh 'GROUP_ID' '+40PHONE'

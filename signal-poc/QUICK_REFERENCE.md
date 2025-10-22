@@ -17,7 +17,7 @@ curl -X POST http://localhost:8080/v1/register/+12345678900 \
 curl -X POST http://localhost:8080/v1/register/+12345678900/verify/CODE
 
 # 3. Start PoC
-cd ~/projects/safe-poc/signal-poc
+cd <project-root>/signal-poc
 ./start.sh
 
 # 4. Open http://localhost:3000

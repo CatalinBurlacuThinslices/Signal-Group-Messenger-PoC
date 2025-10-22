@@ -192,7 +192,7 @@ curl -s "http://localhost:8080/v1/receive/+40751770274?timeout=15"
 
 Or use the script:
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-api
+cd <project-root>/signal-api
 ./sync-groups.sh
 ```
 

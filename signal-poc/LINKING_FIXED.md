@@ -35,13 +35,13 @@ I've created an **improved linking script** that:
 
 **1. Switch to Real Mode:**
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-poc
+cd <project-root>/signal-poc
 ./switch-mode.sh real
 ```
 
 **2. Run Improved Linking Script:**
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-api
+cd <project-root>/signal-api
 ./link-and-verify.sh
 ```
 
@@ -86,7 +86,7 @@ This **guarantees success**:
 
 **3. Run linking:**
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-api
+cd <project-root>/signal-api
 ./link-and-verify.sh
 ```
 
@@ -179,7 +179,7 @@ After linking:
 
 ```bash
 # Clean everything
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-api
+cd <project-root>/signal-api
 docker-compose down
 rm -rf signal-cli-config/data/*
 docker-compose up -d
@@ -196,7 +196,7 @@ sleep 10
 If linking continues to fail, demo mode works perfectly to show the PoC:
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-poc
+cd <project-root>/signal-poc
 ./switch-mode.sh demo
 # Open http://localhost:3000
 # Everything works with mock data
@@ -217,7 +217,7 @@ When you need actual Signal integration:
 **Ready to try the improved linking process?** Run:
 
 ```bash
-cd /Users/thinslicesacademy8/projects/safe-poc/signal-poc
+cd <project-root>/signal-poc
 ./switch-mode.sh real
 
 cd ../signal-api
