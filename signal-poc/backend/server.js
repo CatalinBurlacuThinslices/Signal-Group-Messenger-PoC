@@ -230,6 +230,174 @@ app.post('/api/send-test', async (req, res) => {
   }
 });
 
+// Send message to phone number(s)
+app.post('/api/send-to-phone', async (req, res) => {
+  try {
+    const { phoneNumber, message } = req.body;
+
+    // Validation
+    if (!phoneNumber) {
+      return res.status(400).json({
+        success: false,
+        error: 'Phone number is required'
+      });
+    }
+
+    if (!message || message.trim().length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'Message cannot be empty'
+      });
+    }
+
+    if (!SIGNAL_NUMBER) {
+      throw new Error('SIGNAL_NUMBER not configured in .env file');
+    }
+
+    // Format phone number if needed (ensure it starts with +)
+    const formattedPhone = phoneNumber.startsWith('+') ? phoneNumber : `+${phoneNumber}`;
+
+    console.log(`Sending message to phone: ${formattedPhone}`);
+    console.log(`Message: ${message.substring(0, 50)}...`);
+
+    // Send message via Signal API
+    const response = await axios.post(
+      `${SIGNAL_API_URL}/v2/send`,
+      {
+        message: message.trim(),
+        number: SIGNAL_NUMBER,
+        recipients: [formattedPhone]
+      },
+      {
+        timeout: 30000,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    console.log('Message sent successfully to phone:', response.data);
+
+    res.json({
+      success: true,
+      message: 'Message sent successfully to phone number',
+      timestamp: response.data.timestamp,
+      recipient: formattedPhone,
+      data: response.data
+    });
+
+  } catch (error) {
+    const errorInfo = logError('Send Message to Phone', error);
+    
+    let errorMessage = 'Failed to send message to phone number';
+    let hint = '';
+
+    if (error.response?.status === 404) {
+      errorMessage = 'Signal account not found';
+      hint = 'Make sure your number is registered and the recipient has Signal';
+    } else if (error.response?.status === 400) {
+      errorMessage = 'Invalid request';
+      hint = 'Check phone number format (should include country code, e.g., +1234567890)';
+    } else if (error.code === 'ECONNREFUSED') {
+      errorMessage = 'Cannot connect to Signal API';
+      hint = 'Ensure Signal API Docker container is running';
+    }
+
+    res.status(error.response?.status || 500).json({
+      success: false,
+      error: errorMessage,
+      details: errorInfo.message,
+      hint
+    });
+  }
+});
+
+// Broadcast message to multiple phone numbers
+app.post('/api/broadcast', async (req, res) => {
+  try {
+    const { phoneNumbers, message } = req.body;
+
+    // Validation
+    if (!phoneNumbers || !Array.isArray(phoneNumbers) || phoneNumbers.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'At least one phone number is required (phoneNumbers array)'
+      });
+    }
+
+    if (!message || message.trim().length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'Message cannot be empty'
+      });
+    }
+
+    if (!SIGNAL_NUMBER) {
+      throw new Error('SIGNAL_NUMBER not configured in .env file');
+    }
+
+    // Format all phone numbers (ensure they start with +)
+    const formattedPhones = phoneNumbers.map(phone => 
+      phone.startsWith('+') ? phone : `+${phone}`
+    );
+
+    console.log(`Broadcasting message to ${formattedPhones.length} recipients`);
+    console.log(`Recipients: ${formattedPhones.join(', ')}`);
+    console.log(`Message: ${message.substring(0, 50)}...`);
+
+    // Send message via Signal API to all recipients
+    const response = await axios.post(
+      `${SIGNAL_API_URL}/v2/send`,
+      {
+        message: message.trim(),
+        number: SIGNAL_NUMBER,
+        recipients: formattedPhones
+      },
+      {
+        timeout: 30000,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    console.log('Broadcast message sent successfully:', response.data);
+
+    res.json({
+      success: true,
+      message: `Message broadcast to ${formattedPhones.length} recipients`,
+      timestamp: response.data.timestamp,
+      recipients: formattedPhones,
+      recipientCount: formattedPhones.length,
+      data: response.data
+    });
+
+  } catch (error) {
+    const errorInfo = logError('Broadcast Message', error);
+    
+    let errorMessage = 'Failed to broadcast message';
+    let hint = '';
+
+    if (error.response?.status === 404) {
+      errorMessage = 'Signal account not found';
+      hint = 'Make sure your number is registered and recipients have Signal';
+    } else if (error.response?.status === 400) {
+      errorMessage = 'Invalid request';
+      hint = 'Check phone number formats (should include country code, e.g., +1234567890)';
+    } else if (error.code === 'ECONNREFUSED') {
+      errorMessage = 'Cannot connect to Signal API';
+      hint = 'Ensure Signal API Docker container is running';
+    }
+
+    res.status(error.response?.status || 500).json({
+      success: false,
+      error: errorMessage,
+      details: errorInfo.message,
+      hint
+    });
+  }
+});
+
 // Sync with Signal API (receive messages to update groups)
 app.post('/api/sync', async (req, res) => {
   try {

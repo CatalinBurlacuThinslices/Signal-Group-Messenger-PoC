@@ -12,6 +12,8 @@ function App() {
   const [apiStatus, setApiStatus] = useState({ backend: 'unknown', signalApi: 'unknown' })
   const [showLinkDevice, setShowLinkDevice] = useState(false)
   const [qrCodeUrl, setQrCodeUrl] = useState('')
+  const [sendMode, setSendMode] = useState('group') // 'group' or 'phone'
+  const [phoneNumbers, setPhoneNumbers] = useState('')
 
   // Check API health on mount
   useEffect(() => {
@@ -134,6 +136,79 @@ function App() {
     return group ? group.name : ''
   }
 
+  const handleBroadcast = async (e) => {
+    e.preventDefault()
+    
+    // Clear previous messages
+    setError('')
+    setSuccess('')
+
+    // Validation
+    if (!phoneNumbers.trim()) {
+      setError('Please enter at least one phone number')
+      return
+    }
+
+    if (!message.trim()) {
+      setError('Please enter a message')
+      return
+    }
+
+    // Parse phone numbers (split by comma, space, newline, or semicolon)
+    const phoneArray = phoneNumbers
+      .split(/[,\s;]+/)
+      .map(num => num.trim())
+      .filter(num => num.length > 0)
+
+    if (phoneArray.length === 0) {
+      setError('No valid phone numbers found')
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      console.log('Broadcasting message to:', phoneArray)
+      console.log('Message:', message)
+
+      const response = await axios.post('/api/broadcast', {
+        phoneNumbers: phoneArray,
+        message: message.trim()
+      })
+
+      console.log('Broadcast response:', response.data)
+
+      if (response.data.success) {
+        setSuccess(`✅ Message broadcast to ${response.data.recipientCount} recipients!`)
+        setMessage('') // Clear message input
+        // Keep phone numbers so user can send another message to same recipients
+        
+        // Clear success message after 5 seconds
+        setTimeout(() => setSuccess(''), 5000)
+      } else {
+        setError(response.data.error || 'Failed to broadcast message')
+      }
+
+    } catch (err) {
+      console.error('Error broadcasting message:', err)
+      
+      const errorMsg = err.response?.data?.error || err.message || 'Failed to broadcast message'
+      const details = err.response?.data?.details || ''
+      const hint = err.response?.data?.hint || ''
+      
+      let fullError = errorMsg
+      if (details) fullError += `\nDetails: ${details}`
+      if (hint) fullError += `\nHint: ${hint}`
+      
+      setError(fullError)
+      
+      // Log full error for debugging
+      console.error('Full error:', err.response?.data)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const handleLinkDevice = async () => {
     setShowLinkDevice(true)
     setError('')
@@ -161,8 +236,8 @@ function App() {
   return (
     <div className="app">
       <header className="header">
-        <h1>📱 Signal Group Messenger</h1>
-        <p className="subtitle">Send messages to Signal groups</p>
+        <h1>📱 Signal Messenger</h1>
+        <p className="subtitle">Send messages to Signal groups or phone numbers</p>
         
         <div className="status-bar">
           <span className={`status-badge ${apiStatus.backend === 'running' ? 'online' : 'offline'}`}>
@@ -224,55 +299,127 @@ function App() {
           <div className="card">
             <h2>Send Message</h2>
             
-            <form onSubmit={handleSendMessage}>
-              <div className="form-group">
-                <label htmlFor="group-select">Select Group:</label>
-                <select
-                  id="group-select"
-                  value={selectedGroup}
-                  onChange={(e) => setSelectedGroup(e.target.value)}
-                  disabled={loading || groups.length === 0}
-                  className="form-control"
-                >
-                  <option value="">-- Choose a group --</option>
-                  {groups.map((group) => (
-                    <option key={group.id} value={group.id}>
-                      {group.name} ({group.memberCount} members)
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="message-input">Message:</label>
-                <textarea
-                  id="message-input"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Type your message here..."
-                  rows="6"
-                  disabled={loading || !selectedGroup}
-                  className="form-control"
-                />
-                <div className="char-count">
-                  {message.length} characters
-                </div>
-              </div>
-
-              {selectedGroup && (
-                <div className="selected-group-info">
-                  Sending to: <strong>{getSelectedGroupName()}</strong>
-                </div>
-              )}
-
+            {/* Mode Toggle */}
+            <div className="mode-toggle">
               <button 
-                type="submit" 
-                disabled={loading || !selectedGroup || !message.trim()}
-                className="btn-primary"
+                className={`mode-btn ${sendMode === 'group' ? 'active' : ''}`}
+                onClick={() => setSendMode('group')}
+                type="button"
               >
-                {loading ? '⏳ Sending...' : '📤 Send Message'}
+                👥 Send to Group
               </button>
-            </form>
+              <button 
+                className={`mode-btn ${sendMode === 'phone' ? 'active' : ''}`}
+                onClick={() => setSendMode('phone')}
+                type="button"
+              >
+                📞 Send to Phone Numbers
+              </button>
+            </div>
+
+            {/* Group Mode Form */}
+            {sendMode === 'group' && (
+              <form onSubmit={handleSendMessage}>
+                <div className="form-group">
+                  <label htmlFor="group-select">Select Group:</label>
+                  <select
+                    id="group-select"
+                    value={selectedGroup}
+                    onChange={(e) => setSelectedGroup(e.target.value)}
+                    disabled={loading || groups.length === 0}
+                    className="form-control"
+                  >
+                    <option value="">-- Choose a group --</option>
+                    {groups.map((group) => (
+                      <option key={group.id} value={group.id}>
+                        {group.name} ({group.memberCount} members)
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="message-input">Message:</label>
+                  <textarea
+                    id="message-input"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Type your message here..."
+                    rows="6"
+                    disabled={loading || !selectedGroup}
+                    className="form-control"
+                  />
+                  <div className="char-count">
+                    {message.length} characters
+                  </div>
+                </div>
+
+                {selectedGroup && (
+                  <div className="selected-group-info">
+                    Sending to: <strong>{getSelectedGroupName()}</strong>
+                  </div>
+                )}
+
+                <button 
+                  type="submit" 
+                  disabled={loading || !selectedGroup || !message.trim()}
+                  className="btn-primary"
+                >
+                  {loading ? '⏳ Sending...' : '📤 Send Message'}
+                </button>
+              </form>
+            )}
+
+            {/* Phone Numbers Mode Form */}
+            {sendMode === 'phone' && (
+              <form onSubmit={handleBroadcast}>
+                <div className="form-group">
+                  <label htmlFor="phone-numbers-input">Phone Numbers:</label>
+                  <textarea
+                    id="phone-numbers-input"
+                    value={phoneNumbers}
+                    onChange={(e) => setPhoneNumbers(e.target.value)}
+                    placeholder="Enter phone numbers (one per line or comma-separated)&#10;Example:&#10;+40751770274&#10;+12025551234&#10;+447700900123"
+                    rows="4"
+                    disabled={loading}
+                    className="form-control"
+                  />
+                  <div className="phone-hint">
+                    💡 Separate with comma, space, or new line. Must include country code (+40, +1, etc.)
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="message-input-phone">Message:</label>
+                  <textarea
+                    id="message-input-phone"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Type your message here..."
+                    rows="6"
+                    disabled={loading}
+                    className="form-control"
+                  />
+                  <div className="char-count">
+                    {message.length} characters
+                  </div>
+                </div>
+
+                {phoneNumbers.trim() && (
+                  <div className="selected-group-info">
+                    Recipients: <strong>{phoneNumbers.split(/[,\s;]+/).filter(n => n.length > 0).length} phone number(s)</strong>
+                  </div>
+                )}
+
+                <button 
+                  type="submit" 
+                  disabled={loading || !phoneNumbers.trim() || !message.trim()}
+                  className="btn-primary"
+                >
+                  {loading ? '⏳ Broadcasting...' : '📤 Broadcast Message'}
+                </button>
+              </form>
+            )}
           </div>
 
           {/* Error Messages */}
@@ -334,7 +481,7 @@ function App() {
       </main>
 
       <footer className="footer">
-        <p>Signal Group Messenger PoC - Built with React + Node.js</p>
+        <p>Signal Messenger PoC - Built with React + Node.js</p>
         <p className="footer-note">
           Requires <a href="https://github.com/bbernhard/signal-cli-rest-api" target="_blank" rel="noopener noreferrer">
             signal-cli-rest-api
