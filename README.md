@@ -26,6 +26,8 @@ Opens automatically at: **http://localhost:3000**
 ✅ View all your Signal groups  
 ✅ Select groups (click or dropdown)  
 ✅ Send messages to groups  
+✅ Broadcast to multiple phone numbers  
+✅ **Set custom profile name** (e.g., "Amatsu" instead of phone number) 🎭  
 ✅ Messages visible to all members  
 ✅ Real-time error handling  
 ✅ Status indicators  
@@ -129,10 +131,19 @@ cd ..
 
 ### Use the Web App:
 - Open: http://localhost:3000
+- **Set your profile name:** Click "🎭 Set Profile Name" (e.g., "Amatsu")
 - Click refresh to sync groups
-- Select a group
+- Select a group or enter phone numbers
 - Type message
 - Send!
+
+### Set Your Profile Name:
+```bash
+cd signal-api
+./set-profile-name.sh Amatsu
+```
+
+See [PROFILE_NAME_GUIDE.md](PROFILE_NAME_GUIDE.md) for detailed instructions.
 
 ### Stop Everything:
 ```bash

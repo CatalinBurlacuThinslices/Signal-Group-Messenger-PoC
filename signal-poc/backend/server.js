@@ -444,6 +444,81 @@ app.get('/api/config', (req, res) => {
   });
 });
 
+// Update Signal profile (name, about, emoji)
+app.put('/api/profile', async (req, res) => {
+  try {
+    const { name, about, emoji, avatar } = req.body;
+
+    // Validation
+    if (!name || name.trim().length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'Profile name is required'
+      });
+    }
+
+    if (!SIGNAL_NUMBER) {
+      throw new Error('SIGNAL_NUMBER not configured in .env file');
+    }
+
+    console.log(`Updating profile for: ${SIGNAL_NUMBER}`);
+    console.log(`New name: ${name}`);
+
+    // Build profile update request
+    const profileData = {
+      name: name.trim()
+    };
+
+    if (about) profileData.about = about.trim();
+    if (emoji) profileData.emoji = emoji.trim();
+    if (avatar) profileData.avatar = avatar;
+
+    // Update profile via Signal API
+    const response = await axios.put(
+      `${SIGNAL_API_URL}/v1/profiles/${SIGNAL_NUMBER}`,
+      profileData,
+      {
+        timeout: 10000,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    console.log('Profile updated successfully');
+
+    res.json({
+      success: true,
+      message: 'Profile updated successfully',
+      profile: profileData
+    });
+
+  } catch (error) {
+    const errorInfo = logError('Update Profile', error);
+    
+    let errorMessage = 'Failed to update profile';
+    let hint = '';
+
+    if (error.response?.status === 404) {
+      errorMessage = 'Signal account not found';
+      hint = 'Make sure your number is registered or linked';
+    } else if (error.response?.status === 400) {
+      errorMessage = 'Invalid request';
+      hint = 'Check profile data format';
+    } else if (error.code === 'ECONNREFUSED') {
+      errorMessage = 'Cannot connect to Signal API';
+      hint = 'Ensure Signal API Docker container is running';
+    }
+
+    res.status(error.response?.status || 500).json({
+      success: false,
+      error: errorMessage,
+      details: errorInfo.message,
+      hint
+    });
+  }
+});
+
 // Generate QR code for device linking
 app.get('/api/link-device', async (req, res) => {
   try {

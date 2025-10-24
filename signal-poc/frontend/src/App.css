@@ -480,6 +480,85 @@ textarea.form-control {
   border-radius: 4px;
 }
 
+/* Profile Form Styles */
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.profile-form .form-group {
+  margin-bottom: 0;
+}
+
+.profile-form input {
+  width: 100%;
+}
+
+.field-hint {
+  font-size: 0.85rem;
+  color: #7f8c8d;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+.profile-preview {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 2px dashed #667eea;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.profile-preview strong {
+  display: block;
+  color: #667eea;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.preview-about {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+.profile-examples {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: #f8f9ff;
+  border-radius: 8px;
+  border-left: 3px solid #667eea;
+}
+
+.profile-examples p {
+  color: #2c3e50;
+  margin-bottom: 0.75rem;
+}
+
+.profile-examples ul {
+  list-style: none;
+  padding-left: 1rem;
+}
+
+.profile-examples li {
+  color: #555;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  background: white;
+  border-radius: 4px;
+  transition: transform 0.2s;
+}
+
+.profile-examples li:hover {
+  transform: translateX(5px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .header h1 {
@@ -509,6 +588,11 @@ textarea.form-control {
 
   .mode-btn {
     width: 100%;
+  }
+
+  .profile-preview {
+    padding: 1rem;
+    font-size: 0.9rem;
   }
 }
 

@@ -50,7 +50,16 @@ cd ../signal-api
 - **🔴 KEEP SIGNAL OPEN for 30 seconds!**
 - Wait for terminal to show "✅ Device linked successfully!"
 
-**Step 4: Use the App**
+**Step 4: Set Your Profile Name (Optional but Recommended)**
+```bash
+cd ../signal-api
+./set-profile-name.sh Amatsu
+```
+Now your messages will show "Amatsu" instead of your phone number! 🎭
+
+Or use the web UI: Click "🎭 Set Profile Name" button at http://localhost:3000
+
+**Step 5: Use the App**
 - Refresh: http://localhost:3000
 - Your real groups appear!
 - Send real messages!

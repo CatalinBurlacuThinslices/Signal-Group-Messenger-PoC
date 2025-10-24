@@ -14,6 +14,10 @@ function App() {
   const [qrCodeUrl, setQrCodeUrl] = useState('')
   const [sendMode, setSendMode] = useState('group') // 'group' or 'phone'
   const [phoneNumbers, setPhoneNumbers] = useState('')
+  const [showProfile, setShowProfile] = useState(false)
+  const [profileName, setProfileName] = useState('')
+  const [profileAbout, setProfileAbout] = useState('')
+  const [profileEmoji, setProfileEmoji] = useState('')
 
   // Check API health on mount
   useEffect(() => {
@@ -233,6 +237,64 @@ function App() {
     setQrCodeUrl('')
   }
 
+  const handleUpdateProfile = async (e) => {
+    e.preventDefault()
+    
+    setError('')
+    setSuccess('')
+
+    if (!profileName.trim()) {
+      setError('Profile name is required')
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      console.log('Updating profile:', { profileName, profileAbout, profileEmoji })
+
+      const response = await axios.put('/api/profile', {
+        name: profileName.trim(),
+        about: profileAbout.trim() || undefined,
+        emoji: profileEmoji.trim() || undefined
+      })
+
+      console.log('Profile update response:', response.data)
+
+      if (response.data.success) {
+        setSuccess('✅ Profile updated successfully! Your new name will appear on messages.')
+        
+        // Clear form after 3 seconds
+        setTimeout(() => {
+          setShowProfile(false)
+          setProfileName('')
+          setProfileAbout('')
+          setProfileEmoji('')
+          setSuccess('')
+        }, 3000)
+      } else {
+        setError(response.data.error || 'Failed to update profile')
+      }
+
+    } catch (err) {
+      console.error('Error updating profile:', err)
+      
+      const errorMsg = err.response?.data?.error || err.message || 'Failed to update profile'
+      const details = err.response?.data?.details || ''
+      const hint = err.response?.data?.hint || ''
+      
+      let fullError = errorMsg
+      if (details) fullError += `\nDetails: ${details}`
+      if (hint) fullError += `\nHint: ${hint}`
+      
+      setError(fullError)
+      
+      console.error('Full error:', err.response?.data)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="app">
       <header className="header">
@@ -248,6 +310,9 @@ function App() {
           </span>
           <button onClick={handleLinkDevice} className="btn-link-device">
             📱 Link Device
+          </button>
+          <button onClick={() => setShowProfile(true)} className="btn-link-device">
+            🎭 Set Profile Name
           </button>
         </div>
       </header>
@@ -471,6 +536,95 @@ function App() {
                     ) : (
                       <p>Generating QR code...</p>
                     )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Profile Settings Modal */}
+          {showProfile && (
+            <div className="modal-overlay" onClick={() => setShowProfile(false)}>
+              <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                <div className="modal-header">
+                  <h2>🎭 Set Your Profile Name</h2>
+                  <button onClick={() => setShowProfile(false)} className="modal-close">✕</button>
+                </div>
+                
+                <div className="modal-body">
+                  <form onSubmit={handleUpdateProfile} className="profile-form">
+                    <div className="form-group">
+                      <label htmlFor="profile-name">Display Name: *</label>
+                      <input
+                        type="text"
+                        id="profile-name"
+                        value={profileName}
+                        onChange={(e) => setProfileName(e.target.value)}
+                        placeholder="Amatsu"
+                        className="form-control"
+                        disabled={loading}
+                        maxLength={50}
+                      />
+                      <div className="field-hint">
+                        This name will appear when you send messages
+                      </div>
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="profile-about">About (optional):</label>
+                      <input
+                        type="text"
+                        id="profile-about"
+                        value={profileAbout}
+                        onChange={(e) => setProfileAbout(e.target.value)}
+                        placeholder="Available 24/7"
+                        className="form-control"
+                        disabled={loading}
+                        maxLength={100}
+                      />
+                      <div className="field-hint">
+                        Status message or bio
+                      </div>
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="profile-emoji">Emoji (optional):</label>
+                      <input
+                        type="text"
+                        id="profile-emoji"
+                        value={profileEmoji}
+                        onChange={(e) => setProfileEmoji(e.target.value)}
+                        placeholder="🌟"
+                        className="form-control"
+                        disabled={loading}
+                        maxLength={5}
+                      />
+                      <div className="field-hint">
+                        Single emoji or short emoji sequence
+                      </div>
+                    </div>
+
+                    <div className="profile-preview">
+                      <strong>Preview:</strong> {profileName || 'Your Name'} {profileEmoji}
+                      {profileAbout && <div className="preview-about">{profileAbout}</div>}
+                    </div>
+
+                    <button 
+                      type="submit" 
+                      disabled={loading || !profileName.trim()}
+                      className="btn-primary"
+                    >
+                      {loading ? '⏳ Updating...' : '💾 Save Profile'}
+                    </button>
+                  </form>
+
+                  <div className="profile-examples">
+                    <p><strong>💡 Examples:</strong></p>
+                    <ul>
+                      <li>Amatsu 🎮 - Simple and personal</li>
+                      <li>Support Team 📞 - Professional</li>
+                      <li>Bot Assistant 🤖 - Automated</li>
+                    </ul>
                   </div>
                 </div>
               </div>
