@@ -28,6 +28,7 @@ Opens automatically at: **http://localhost:3000**
 ✅ Send messages to groups  
 ✅ Broadcast to multiple phone numbers  
 ✅ **Set custom profile name** (e.g., "Amatsu" instead of phone number) 🎭  
+✅ **Upload profile picture from web UI** 📸 ⭐ NEW!  
 ✅ Messages visible to all members  
 ✅ Real-time error handling  
 ✅ Status indicators  
@@ -131,19 +132,31 @@ cd ..
 
 ### Use the Web App:
 - Open: http://localhost:3000
-- **Set your profile name:** Click "🎭 Set Profile Name" (e.g., "Amatsu")
+- **Set your profile:** Click "🎭 Set Profile Name"
+  - Enter name (e.g., "Amatsu")
+  - Upload profile picture 📸
+  - Add status/emoji
+  - Save!
 - Click refresh to sync groups
 - Select a group or enter phone numbers
 - Type message
 - Send!
 
-### Set Your Profile Name:
+### Set Your Profile (Name + Picture):
 ```bash
 cd signal-api
+
+# Just name
 ./set-profile-name.sh Amatsu
+
+# Just picture
+./set-profile-avatar.sh ~/Pictures/photo.jpg
+
+# Everything at once
+./set-full-profile.sh "Amatsu" "Gamer" "🎮" ~/Pictures/photo.jpg
 ```
 
-See [PROFILE_NAME_GUIDE.md](PROFILE_NAME_GUIDE.md) for detailed instructions.
+See [SET_PROFILE_COMPLETE.md](SET_PROFILE_COMPLETE.md) for detailed instructions.
 
 ### Stop Everything:
 ```bash

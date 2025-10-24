@@ -18,6 +18,9 @@ function App() {
   const [profileName, setProfileName] = useState('')
   const [profileAbout, setProfileAbout] = useState('')
   const [profileEmoji, setProfileEmoji] = useState('')
+  const [profileAvatar, setProfileAvatar] = useState('')
+  const [avatarPreview, setAvatarPreview] = useState('')
+  const [avatarFile, setAvatarFile] = useState(null)
 
   // Check API health on mount
   useEffect(() => {
@@ -237,6 +240,50 @@ function App() {
     setQrCodeUrl('')
   }
 
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+
+    // Check file size (5MB limit)
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Image is too large. Please use an image under 5MB.')
+      return
+    }
+
+    // Check file type
+    if (!file.type.startsWith('image/')) {
+      setError('Please select an image file (JPEG, PNG, GIF, WebP)')
+      return
+    }
+
+    setAvatarFile(file)
+
+    // Create preview
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      setAvatarPreview(reader.result)
+    }
+    reader.readAsDataURL(file)
+
+    // Convert to base64 for upload
+    const base64Reader = new FileReader()
+    base64Reader.onloadend = () => {
+      // Remove data:image/xxx;base64, prefix
+      const base64String = base64Reader.result.split(',')[1]
+      setProfileAvatar(base64String)
+    }
+    base64Reader.readAsDataURL(file)
+  }
+
+  const handleRemoveAvatar = () => {
+    setAvatarFile(null)
+    setAvatarPreview('')
+    setProfileAvatar('')
+    // Clear file input
+    const fileInput = document.getElementById('profile-avatar')
+    if (fileInput) fileInput.value = ''
+  }
+
   const handleUpdateProfile = async (e) => {
     e.preventDefault()
     
@@ -251,18 +298,30 @@ function App() {
     setLoading(true)
 
     try {
-      console.log('Updating profile:', { profileName, profileAbout, profileEmoji })
+      console.log('Updating profile:', { 
+        profileName, 
+        profileAbout, 
+        profileEmoji,
+        hasAvatar: !!profileAvatar 
+      })
 
-      const response = await axios.put('/api/profile', {
+      const profileData = {
         name: profileName.trim(),
         about: profileAbout.trim() || undefined,
         emoji: profileEmoji.trim() || undefined
-      })
+      }
+
+      // Add avatar if provided
+      if (profileAvatar) {
+        profileData.avatar = profileAvatar
+      }
+
+      const response = await axios.put('/api/profile', profileData)
 
       console.log('Profile update response:', response.data)
 
       if (response.data.success) {
-        setSuccess('✅ Profile updated successfully! Your new name will appear on messages.')
+        setSuccess('✅ Profile updated successfully! Your new profile will appear on messages.')
         
         // Clear form after 3 seconds
         setTimeout(() => {
@@ -270,6 +329,9 @@ function App() {
           setProfileName('')
           setProfileAbout('')
           setProfileEmoji('')
+          setProfileAvatar('')
+          setAvatarPreview('')
+          setAvatarFile(null)
           setSuccess('')
         }, 3000)
       } else {
@@ -547,7 +609,7 @@ function App() {
             <div className="modal-overlay" onClick={() => setShowProfile(false)}>
               <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <div className="modal-header">
-                  <h2>🎭 Set Your Profile Name</h2>
+                  <h2>🎭 Set Your Profile</h2>
                   <button onClick={() => setShowProfile(false)} className="modal-close">✕</button>
                 </div>
                 
@@ -604,9 +666,48 @@ function App() {
                       </div>
                     </div>
 
+                    <div className="form-group">
+                      <label htmlFor="profile-avatar">Profile Picture (optional): 📸</label>
+                      <input
+                        type="file"
+                        id="profile-avatar"
+                        accept="image/*"
+                        onChange={handleAvatarChange}
+                        className="form-control file-input"
+                        disabled={loading}
+                      />
+                      <div className="field-hint">
+                        JPEG, PNG, GIF, or WebP (max 5MB, recommended 640x640px)
+                      </div>
+                      
+                      {avatarPreview && (
+                        <div className="avatar-preview-container">
+                          <img src={avatarPreview} alt="Avatar preview" className="avatar-preview" />
+                          <button 
+                            type="button" 
+                            onClick={handleRemoveAvatar}
+                            className="btn-remove-avatar"
+                            disabled={loading}
+                          >
+                            ✕ Remove
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
                     <div className="profile-preview">
-                      <strong>Preview:</strong> {profileName || 'Your Name'} {profileEmoji}
-                      {profileAbout && <div className="preview-about">{profileAbout}</div>}
+                      <strong>Preview:</strong>
+                      <div className="preview-content">
+                        {avatarPreview && (
+                          <img src={avatarPreview} alt="Profile" className="preview-avatar" />
+                        )}
+                        <div className="preview-text">
+                          <div className="preview-name">
+                            {profileName || 'Your Name'} {profileEmoji}
+                          </div>
+                          {profileAbout && <div className="preview-about">{profileAbout}</div>}
+                        </div>
+                      </div>
                     </div>
 
                     <button 
@@ -619,11 +720,12 @@ function App() {
                   </form>
 
                   <div className="profile-examples">
-                    <p><strong>💡 Examples:</strong></p>
+                    <p><strong>💡 Tips:</strong></p>
                     <ul>
-                      <li>Amatsu 🎮 - Simple and personal</li>
-                      <li>Support Team 📞 - Professional</li>
-                      <li>Bot Assistant 🤖 - Automated</li>
+                      <li>Use a clear, well-lit photo for best results</li>
+                      <li>Square images (1:1 ratio) work best</li>
+                      <li>Keep file size under 1MB for faster uploads</li>
+                      <li>Your profile updates across all devices</li>
                     </ul>
                   </div>
                 </div>

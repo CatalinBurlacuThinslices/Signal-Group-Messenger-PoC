@@ -39,6 +39,17 @@ Use the web interface and fill in:
 - About: `Available 24/7`
 - Emoji: `🌟`
 
+**With Profile Picture:**
+```bash
+cd signal-api
+./set-profile-avatar.sh ~/Pictures/your-photo.jpg
+```
+
+**Everything at Once:**
+```bash
+./set-full-profile.sh "Amatsu" "Gamer" "🎮" ~/Pictures/photo.jpg
+```
+
 ---
 
 ## 💡 Tips
@@ -52,7 +63,8 @@ Use the web interface and fill in:
 
 ## 📚 Need More Help?
 
-See [PROFILE_NAME_GUIDE.md](PROFILE_NAME_GUIDE.md) for detailed instructions.
+- [PROFILE_NAME_GUIDE.md](PROFILE_NAME_GUIDE.md) - Detailed name setup
+- [signal-api/SET_PROFILE_PICTURE.md](signal-api/SET_PROFILE_PICTURE.md) - Add profile picture
 
 ---
 

@@ -17,13 +17,14 @@
 7. [Architecture Overview](#architecture-overview)
 8. [How to Run the Project](#how-to-run-the-project)
 9. [Commands Reference](#commands-reference)
-10. [API Documentation](#api-documentation)
-11. [How to Create Groups](#how-to-create-groups)
-12. [Environment Configuration](#environment-configuration)
-13. [Troubleshooting](#troubleshooting)
-14. [Extension Guide](#extension-guide)
-15. [Code Structure](#code-structure)
-16. [FAQs](#faqs)
+10. [Profile Management](#profile-management-) 🎭 NEW!
+11. [API Documentation](#api-documentation)
+12. [How to Create Groups](#how-to-create-groups)
+13. [Environment Configuration](#environment-configuration)
+14. [Troubleshooting](#troubleshooting)
+15. [Extension Guide](#extension-guide)
+16. [Code Structure](#code-structure)
+17. [FAQs](#faqs)
 
 ---
 
@@ -68,6 +69,10 @@ This PoC can be used for:
 - ✅ **Select any group** - Click to select from the list
 - ✅ **Write messages** - Large textarea for composing
 - ✅ **Send messages** - Messages appear in Signal for all members
+- ✅ **Broadcast to multiple phone numbers** - Send to multiple recipients at once
+- ✅ **Set profile name** - Change display name (e.g., "Amatsu" instead of phone number) ✨
+- ✅ **Set profile status/about** - Add status message and emoji ✨
+- ✅ **Upload profile picture via web UI** - Drag & drop image upload with preview 📸
 - ✅ **Real-time error messages** - Errors shown in UI, console, and logs
 - ✅ **Status indicators** - Green/red badges for connection status
 - ✅ **Sync on refresh** - Update groups list on demand
@@ -104,6 +109,9 @@ This PoC can be used for:
 - ✅ **Sync groups** - Keep groups up to date
 - ✅ **Send to multiple recipients** - Broadcast messages
 - ✅ **Group administration** - Manage group settings
+- ✅ **Update profile name** - Change display name (works great!) ✨
+- ✅ **Update profile about/status** - Add status message and emoji ✨
+- ✅ **Update profile picture** - Set avatar (requires registered/linked account) 📸
 
 #### ❌ What signal-cli Struggles With:
 
@@ -112,6 +120,15 @@ This PoC can be used for:
 - ❌ **Accepting invitations FROM the project** - Invites must be accepted on phone
 - ❌ **Some GroupsV2 advanced features** - Limited compared to mobile app
 - ❌ **Certain group operations** - Some features unavailable via API
+
+#### ⚠️ Profile Management Notes:
+
+- ✅ **Profile name updates** - Work immediately after account is registered/linked
+- ✅ **Profile status/about** - Can be set along with name
+- ⚠️ **Profile picture/avatar** - **Requires active Signal account first!**
+  - ❌ **Will NOT work** if account is not registered or linked
+  - ✅ **Works perfectly** once account is properly set up
+  - 💡 **Solution:** Link your device first using `./link-device.sh` or register the number
 
 ### 🛠️ Working API Operations
 
@@ -983,6 +1000,247 @@ $ curl http://localhost:5001/api/groups
   "count": 1
 }
 ```
+
+---
+
+## Profile Management 🎭
+
+### Overview
+
+You can customize your Signal profile with:
+- ✅ **Display Name** - Show "Amatsu" instead of phone number
+- ✅ **About/Status** - Add status message like "Available 24/7"
+- ✅ **Emoji** - Add emoji to your profile
+- ⚠️ **Profile Picture** - Requires registered/linked account
+
+###  Status: What Works
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| **Set Profile Name** | ✅ Works | Updates immediately |
+| **Set About/Status** | ✅ Works | Updates immediately |
+| **Set Emoji** | ✅ Works | Updates immediately |
+| **Upload Picture (Web UI)** | ⚠️ Partial | Requires account setup |
+| **Upload Picture (Script)** | ⚠️ Partial | Requires account setup |
+
+### ⚠️ Important Prerequisite
+
+**Profile picture upload will NOT work unless:**
+- ❌ Your account is registered OR
+- ❌ Your device is linked to an existing Signal account
+
+**You must do ONE of these first:**
+1. Link your device: `cd signal-api && ./link-device.sh`
+2. Register the number: `cd signal-api && ./register.sh`
+
+### Method 1: Using Web UI (Easiest) ⭐
+
+#### Step 1: Open Profile Modal
+1. Open http://localhost:3000
+2. Click "🎭 Set Profile Name" button
+
+#### Step 2: Fill in Profile
+```
+Display Name: Amatsu (required)
+About: Gamer & Developer (optional)
+Emoji: 🎮 (optional)
+Profile Picture: Click Choose File (optional)
+```
+
+#### Step 3: Upload Picture
+1. Click "Choose File"
+2. Select image (JPEG, PNG, GIF, WebP)
+3. See instant preview
+4. Click "Save Profile"
+
+#### Features:
+- ✅ Real-time preview
+- ✅ File validation (size, type)
+- ✅ Drag & drop support
+- ✅ Remove and re-upload
+- ✅ Works on mobile
+
+### Method 2: Using Command Line Scripts
+
+#### Set Name Only
+```bash
+cd signal-api
+./set-profile-name.sh "Amatsu"
+```
+
+#### Set Name + Picture
+```bash
+cd signal-api
+./set-profile-avatar.sh "Amatsu" ~/Pictures/photo.jpg
+```
+
+#### Set Complete Profile
+```bash
+cd signal-api
+./set-full-profile.sh "Amatsu" "Gamer & Developer" "🎮" ~/Pictures/photo.jpg
+```
+
+### Image Requirements
+
+**Recommended:**
+- Format: JPEG or PNG
+- Size: Under 1MB (max 5MB)
+- Dimensions: 640x640 pixels
+- Aspect ratio: Square (1:1)
+
+**Supported Formats:**
+- ✅ JPEG/JPG
+- ✅ PNG
+- ✅ GIF (first frame)
+- ✅ WebP
+
+### Troubleshooting Profile Updates
+
+#### Profile Picture Not Working?
+
+**Error:** "User +[NUMBER] is not registered"
+
+**Solution:**
+```bash
+# Option 1: Link your device
+cd signal-api
+./link-device.sh
+# Scan QR with your phone
+
+# Option 2: Register the number
+./register.sh 'signalcaptcha://TOKEN'
+# Then verify SMS code
+./verify.sh 123456
+```
+
+#### Profile Name Updates Working ✅
+
+Profile name and status updates work immediately:
+```bash
+curl -X PUT http://localhost:8080/v1/profiles/+[YOUR_NUMBER] \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "name": "Amatsu",
+    "about": "Available 24/7",
+    "emoji": "🎮"
+  }'
+```
+
+**Response:**
+```
+HTTP 204 No Content (Success!)
+```
+
+#### Image Not Showing Up?
+
+Even after successful upload:
+1. **Wait 1-2 minutes** - Profile sync takes time
+2. **Send a test message** - Check on your phone
+3. **Restart Signal app** - Force sync
+4. **Check recipient has internet** - They need to download
+
+#### Image Too Large?
+
+**Compress it first:**
+```bash
+# Install ImageMagick
+brew install imagemagick
+
+# Resize and compress
+convert large.jpg -resize 640x640 -quality 75 small.jpg
+
+# Then upload
+./set-profile-avatar.sh "Amatsu" small.jpg
+```
+
+### What Recipients See
+
+**Before Profile Setup:**
+```
++40751770274
+Hey there!
+```
+
+**After Name Only:**
+```
+Amatsu
+Hey there!
+```
+
+**After Name + Picture:**
+```
+[Your Avatar] Amatsu 🎮
+Hey there!
+
+Status: Gamer & Developer
+```
+
+### Testing Your Profile
+
+#### 1. Send Test Message
+```bash
+# Send to any group
+curl -X POST http://localhost:5001/api/send \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "groupId": "group.YOUR_GROUP_ID",
+    "message": "Testing my new profile!"
+  }'
+```
+
+#### 2. Check on Phone
+- Open Signal app
+- View the message
+- Your profile name/picture should appear
+
+#### 3. Verify Profile Active
+```bash
+# Check Signal API logs
+docker logs signal-api --tail 20
+
+# Look for successful profile updates (HTTP 204)
+```
+
+### API Endpoint Details
+
+**Update Profile:**
+```
+PUT http://localhost:8080/v1/profiles/{phoneNumber}
+
+Body:
+{
+  "name": "Amatsu",          // Required
+  "about": "Status text",    // Optional
+  "emoji": "🎮",             // Optional
+  "avatar": "base64data..."  // Optional (requires account)
+}
+
+Success: HTTP 204 No Content
+Error: HTTP 400 Bad Request
+```
+
+### Quick Reference
+
+```bash
+# Profile name only (always works)
+./set-profile-name.sh "Amatsu"
+
+# With picture (needs account setup)
+./set-profile-avatar.sh "Amatsu" photo.jpg
+
+# Complete profile (needs account setup)
+./set-full-profile.sh "Amatsu" "Status" "🎮" photo.jpg
+
+# Check if account is ready
+docker exec signal-api signal-cli -a +[NUMBER] listGroups
+```
+
+### Documentation Links
+
+- [PROFILE_NAME_GUIDE.md](PROFILE_NAME_GUIDE.md) - Complete name guide
+- [SET_PROFILE_PICTURE.md](signal-api/SET_PROFILE_PICTURE.md) - Picture upload guide
+- [WEB_UI_PROFILE_UPLOAD.md](WEB_UI_PROFILE_UPLOAD.md) - Web UI instructions
+- [SET_PROFILE_COMPLETE.md](SET_PROFILE_COMPLETE.md) - Master guide
 
 ---
 

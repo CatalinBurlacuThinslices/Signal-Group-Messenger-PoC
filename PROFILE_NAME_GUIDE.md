@@ -209,6 +209,27 @@ cd signal-api
 
 ---
 
+## 📸 Add a Profile Picture Too!
+
+Want to add a profile picture along with your name? We've got you covered!
+
+### Quick Method:
+```bash
+cd signal-api
+./set-profile-avatar.sh ~/Pictures/your-photo.jpg
+```
+
+### Set Everything at Once:
+```bash
+./set-full-profile.sh "Amatsu" "Gamer" "🎮" ~/Pictures/photo.jpg
+```
+
+This sets your name, status, emoji, AND profile picture in one command!
+
+**For detailed instructions, see:** [signal-api/SET_PROFILE_PICTURE.md](signal-api/SET_PROFILE_PICTURE.md)
+
+---
+
 ## 💡 Pro Tips
 
 1. **Keep it short** - Long names get truncated on mobile (max ~25 chars)
@@ -216,6 +237,7 @@ cd signal-api
 3. **Be consistent** - Use the same name across platforms
 4. **Update for context** - Change your status based on availability
 5. **Test it** - Send yourself a message to see how it looks
+6. **Add a picture** - Profile pictures make your messages more recognizable 📸
 
 ---
 
@@ -232,6 +254,7 @@ cd signal-api
 ## 📚 Related Documentation
 
 - [SET_PROFILE_NAME.md](signal-api/SET_PROFILE_NAME.md) - Detailed profile guide
+- [SET_PROFILE_PICTURE.md](signal-api/SET_PROFILE_PICTURE.md) - Add profile picture
 - [API_REFERENCE.md](signal_documentation/API_REFERENCE.md) - Full API documentation
 - [QUICK_COMMANDS.md](signal-poc/QUICK_COMMANDS.md) - Common commands
 
@@ -245,6 +268,7 @@ Your profile name is now "Amatsu" (or whatever you chose). Every message you sen
 - Send a message to test it
 - Add an emoji to make it unique
 - Update your "about" status
+- Add a profile picture (see above)
 - Change it anytime you want!
 
 Enjoy your personalized Signal experience! 🚀
